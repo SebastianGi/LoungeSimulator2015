@@ -104,12 +104,25 @@ def grabMoneyInput():
 def team1bet():
 	grabMoneyInput()
 	global money
+	global currbet
 	money = money - currbet
 	#Won
 	if simgame(chance1wins, team1, team2) == True:
-		pass
+		global moneymade
+		global money
+		money = money + currbet
+		currbet = round(currbet * mult1, 2) #switch
+		money = money + currbet
+		moneymade = moneymade + currbet
+		
+		print("You won the bet and made", currbet)
 	#Lost
+	else:
+		global moneylost
+		moneylost = moneylost + currbet
+		print("You lost the bet")
 	pass
+		
 
 def team2bet():
 	grabMoneyInput()
@@ -136,13 +149,13 @@ def simgame(chance1, team1, team2):
 	if temp > chance1:
 		win1 = False
 		i2 = 16
-		i1 = round(((chance1)/10) + temp)
+		i1 = round(((chance1)/10) + temp2)
 		if i1 > 15:
 			i1 = 15
 	else:
 		win1 = True
 		i1 = 16
-		i2 = round(((100-chance1)/10) + temp)
+		i2 = round(((100-chance1)/10) + temp2)
 		if i2 > 15:
 			i2 = 15
 	for i in range(i1):
@@ -151,7 +164,7 @@ def simgame(chance1, team1, team2):
 		gamerounds.append(2)
 	random.shuffle(gamerounds)
 	for i in range(len(gamerounds)):
-		if i == 1:
+		if gamerounds[i] == 1:
 			w1 = w1 + 1
 			playedround = playedround + 1
 			print("Round", playedround, ": ", team1, "won their", w1, " round.")

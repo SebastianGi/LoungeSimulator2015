@@ -38,7 +38,7 @@ def initTeams():
 	teams.append("Team UMP")
 	teams.append("Pro90Rush")
 	teams.append("Virus Brot")
-	teams.append("Team Brony")
+	teams.append("Deagle Gang")
 	teams.append("Fapnatic")
 	teams.append("Germany")
 	teams.append("Poland")
@@ -53,6 +53,8 @@ def initTeams():
 	teams.append("Meaty")
 	teams.append("Team GreyFace")
 	teams.append("Autonoobs")
+	teams.append("DELAHO")
+	teams.append("Glo Up Dinero Gang")
 
 def newRound():
 	#Getting Teams for Round
@@ -153,6 +155,7 @@ def team2bet():
 		moneylost = moneylost + currbet
 		print("\nYou lost the bet")
 	money = round(money, 2)
+	
 	input("Press any key to continue...")
 	print("-"*40)
 	pass

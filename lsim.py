@@ -55,6 +55,8 @@ def initTeams():
 
 def newRound():
 	#Getting Teams for Round
+	global team1
+	global team2
 	team1 = teams[random.randint(0, len(teams)-1)]
 	while True:
 		team2 = teams[random.randint(0, len(teams)-1)]
@@ -88,6 +90,7 @@ def grabMoneyInput():
 	print("\nHow much do you want to bet?\n")
 	while True:
 		try:
+			global currbet
 			currbet = int(input())
 			if currbet > money:
 				print("You don't have that much money\n")
@@ -100,6 +103,7 @@ def grabMoneyInput():
 
 def team1bet():
 	grabMoneyInput()
+	global money
 	money = money - currbet
 	#Won
 	if simgame(chance1wins, team1, team2) == True:
@@ -123,22 +127,22 @@ def simgame(chance1, team1, team2):
 	i2 = 0
 	w1 = 0
 	w2 = 0
-	round = 0
+	playedround = 0
 	gamerounds = []
 	#To decide who wins Game
 	temp = random.randint(1, 100)
 	#To decide how many Rounds each team won
-	temp2 = random.randomint(0, 15)
+	temp2 = random.randint(0, 15)
 	if temp > chance1:
 		win1 = False
 		i2 = 16
-		i1 = int(round((chance1)/10) + temp)
+		i1 = round(((chance1)/10) + temp)
 		if i1 > 15:
 			i1 = 15
 	else:
 		win1 = True
 		i1 = 16
-		i2 = int(round((100-chance1)/10) + temp)
+		i2 = round(((100-chance1)/10) + temp)
 		if i2 > 15:
 			i2 = 15
 	for i in range(i1):
@@ -149,15 +153,16 @@ def simgame(chance1, team1, team2):
 	for i in range(len(gamerounds)):
 		if i == 1:
 			w1 = w1 + 1
-			round = round + 1
-			print("Round ", round, ": ", team1, "won their ", w1, ", round.")
+			playedround = playedround + 1
+			print("Round", playedround, ": ", team1, "won their", w1, " round.")
 		else:
 			w2 = w2 + 1
-			round = round + 1
-			print("Round ", round, ": ", team2, "won their ", w2, ", round.")
-		if w1 == 16 or w2 == 16:
-			return whowon
-	return whowon
+			playedround = playedround + 1
+			print("Round", playedround, ": ", team2, "won their", w2, " round.")
+		if w1 == 16:
+			return True
+		if w2 == 16:
+			return False
 
 initTeams()
 print("\nTeams:\n" , teams)

@@ -1,13 +1,14 @@
 #!/usr/bin/env python3.5
 
 import random
+import time
 
 teams = []
 money = 5.00
 
 moneymade = 0
 moneylost = 0
-highscore = 0
+#highscore = 0 #currently unused
 
 team1 = ""
 team2 = ""
@@ -55,14 +56,20 @@ def initTeams():
 
 def newRound():
 	#Getting Teams for Round
+	global money
 	global team1
 	global team2
+	global mult1
+	global mult2
+	global chance1wins
+	global chance2wins
+	global saltedchance1wins
+	global saltedchance2wins
 	team1 = teams[random.randint(0, len(teams)-1)]
 	while True:
 		team2 = teams[random.randint(0, len(teams)-1)]
 		if team2 != team1:
 			break
-	print(team1, team2)
 	
 	#Getting popability that team 1 wins
 	chance1wins = random.randint(5, 95)
@@ -76,22 +83,24 @@ def newRound():
 			break
 	saltedchance1wins = chance1wins + salt
 	saltedchance2wins = 100 - saltedchance1wins
-	print(chance1wins, chance2wins, salt, saltedchance1wins, saltedchance2wins)
 	
 	#Calculating the potential win (1*loserodds/winnerodds*0.97)
 	#the 0.97 are the share the casino gets from every bet
 	#variables are the multiplicator that gets applied to the bet
 	mult1 = 1 * saltedchance2wins / saltedchance1wins * 0.97
 	mult2 = 1 * saltedchance1wins / saltedchance2wins * 0.97
-	print(round(mult1, 2), round(mult2, 2))
+	print("\n\nYour money:    ", money, "\nMoney lost:    ", moneylost, "\nMoney made:    ", moneymade)
+	print("\n\nTeam 1:        ", team1, "\nOther betters: ", saltedchance1wins, "\nMult on win:   ", round(mult1, 2))
+	print("\nTeam 2:        ", team2, "\nOther betters: ", saltedchance2wins, "\nMult on win:   ", round(mult2, 2))
+	
 	
 
 def grabMoneyInput():
-	print("\nHow much do you want to bet?\n")
+	print("\nHow much do you want to bet?")
 	while True:
 		try:
 			global currbet
-			currbet = int(input())
+			currbet = float(input())
 			if currbet > money:
 				print("You don't have that much money\n")
 			elif currbet < 0.01:
@@ -109,28 +118,43 @@ def team1bet():
 	#Won
 	if simgame(chance1wins, team1, team2) == True:
 		global moneymade
-		global money
 		money = money + currbet
-		currbet = round(currbet * mult1, 2) #switch
+		currbet = round(currbet * mult1, 2)
 		money = money + currbet
 		moneymade = moneymade + currbet
-		
-		print("You won the bet and made", currbet)
+		print("\nYou won the bet and made", currbet)
 	#Lost
 	else:
 		global moneylost
 		moneylost = moneylost + currbet
-		print("You lost the bet")
+		print("\nYou lost the bet")
+	money = round(money, 2)
+	input("Press any key to continue...")
+	print("-"*40)
 	pass
 		
 
 def team2bet():
 	grabMoneyInput()
+	global money
+	global currbet
 	money = money - currbet
 	#Won
 	if simgame(chance1wins, team1, team2) == False:
-		pass
+		global moneymade
+		money = money + currbet
+		currbet = round(currbet * mult2, 2)
+		money = money + currbet
+		moneymade = moneymade + currbet
+		print("\nYou won the bet and made", currbet)
 	#Lost
+	else:
+		global moneylost
+		moneylost = moneylost + currbet
+		print("\nYou lost the bet")
+	money = round(money, 2)
+	input("Press any key to continue...")
+	print("-"*40)
 	pass
 
 #Simulating a game and returning the winner as a bool(True= Team1, False= Team2)
@@ -144,7 +168,7 @@ def simgame(chance1, team1, team2):
 	gamerounds = []
 	#To decide who wins Game
 	temp = random.randint(1, 100)
-	#To decide how many Rounds each team won
+	#To decide how many Rounds losing team won
 	temp2 = random.randint(0, 15)
 	if temp > chance1:
 		win1 = False
@@ -163,22 +187,25 @@ def simgame(chance1, team1, team2):
 	for i in range(i2):
 		gamerounds.append(2)
 	random.shuffle(gamerounds)
+	print("")
 	for i in range(len(gamerounds)):
 		if gamerounds[i] == 1:
 			w1 = w1 + 1
 			playedround = playedround + 1
-			print("Round", playedround, ": ", team1, "won their", w1, " round.")
+			print("Round", playedround, ": ", team1, "has won", w1, "rounds.")
 		else:
 			w2 = w2 + 1
 			playedround = playedround + 1
-			print("Round", playedround, ": ", team2, "won their", w2, " round.")
+			print("Round", playedround, ": ", team2, "has won", w2, "rounds.")
+		time.sleep(0.3)
 		if w1 == 16:
 			return True
 		if w2 == 16:
 			return False
+		time.sleep(0.4)
 
 initTeams()
-print("\nTeams:\n" , teams)
+#print("\nTeams:\n" , teams) #Printing all initialised teams
 
 #Looping for every Round until no money left
 while money > 0.01:
@@ -193,7 +220,7 @@ while money > 0.01:
 			team1bet()
 			break
 		elif tempinput == "2" or tempinput == team2:
-			team1bet()
+			team2bet()
 			break
 
 print("No money left, ending game")

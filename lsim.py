@@ -102,7 +102,7 @@ def team1bet():
 	grabMoneyInput()
 	money = money - currbet
 	#Won
-	if simgame(chance1wins, team1, team2) == True
+	if simgame(chance1wins, team1, team2) == True:
 		pass
 	#Lost
 	pass
@@ -111,7 +111,7 @@ def team2bet():
 	grabMoneyInput()
 	money = money - currbet
 	#Won
-	if simgame(chance1wins, team1, team2) == False
+	if simgame(chance1wins, team1, team2) == False:
 		pass
 	#Lost
 	pass
@@ -146,15 +146,15 @@ def simgame(chance1, team1, team2):
 	for i in range(i2):
 		gamerounds.append(2)
 	random.shuffle(gamerounds)
-	for i in range(len(gamerounds))
+	for i in range(len(gamerounds)):
 		if i == 1:
 			w1 = w1 + 1
 			round = round + 1
-			print("Round ", round, ": " team1, "won their ", w1, ", round.")
+			print("Round ", round, ": ", team1, "won their ", w1, ", round.")
 		else:
 			w2 = w2 + 1
 			round = round + 1
-			print("Round ", round, ": " team2, "won their ", w2, ", round.")
+			print("Round ", round, ": ", team2, "won their ", w2, ", round.")
 		if w1 == 16 or w2 == 16:
 			return whowon
 	return whowon

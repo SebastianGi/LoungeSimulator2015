@@ -102,7 +102,7 @@ def team1bet():
 	grabMoneyInput()
 	money = money - currbet
 	#Won
-	if simgame() == 0
+	if simgame(chance1wins, team1, team2) == True
 		pass
 	#Lost
 	pass
@@ -111,14 +111,53 @@ def team2bet():
 	grabMoneyInput()
 	money = money - currbet
 	#Won
-	if simgame() == 1
+	if simgame(chance1wins, team1, team2) == False
 		pass
 	#Lost
 	pass
 
-#Simulating a game and returning the winner as a bool(0= Team1, 1= Team2)
-def simgame():
-	pass
+#Simulating a game and returning the winner as a bool(True= Team1, False= Team2)
+def simgame(chance1, team1, team2):
+	win1 = 0
+	i1 = 0
+	i2 = 0
+	w1 = 0
+	w2 = 0
+	round = 0
+	gamerounds = []
+	#To decide who wins Game
+	temp = random.randint(1, 100)
+	#To decide how many Rounds each team won
+	temp2 = random.randomint(0, 15)
+	if temp > chance1:
+		win1 = False
+		i2 = 16
+		i1 = int(round((chance1)/10) + temp)
+		if i1 > 15:
+			i1 = 15
+	else:
+		win1 = True
+		i1 = 16
+		i2 = int(round((100-chance1)/10) + temp)
+		if i2 > 15:
+			i2 = 15
+	for i in range(i1):
+		gamerounds.append(1)
+	for i in range(i2):
+		gamerounds.append(2)
+	random.shuffle(gamerounds)
+	for i in range(len(gamerounds))
+		if i == 1:
+			w1 = w1 + 1
+			round = round + 1
+			print("Round ", round, ": " team1, "won their ", w1, ", round.")
+		else:
+			w2 = w2 + 1
+			round = round + 1
+			print("Round ", round, ": " team2, "won their ", w2, ", round.")
+		if w1 == 16 or w2 == 16:
+			return whowon
+	return whowon
 
 initTeams()
 print("\nTeams:\n" , teams)
